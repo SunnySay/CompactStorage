@@ -1,14 +1,14 @@
 package com.workshop.compactstorage.inventory;
 
-import com.workshop.compactchests.itementity.ItemEntityChest;
-import com.workshop.compactstorage.api.IChest;
-import com.workshop.compactstorage.util.BlockPos;
 import invtweaks.api.container.ChestContainer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+
+import com.workshop.compactstorage.api.IChest;
+import com.workshop.compactstorage.util.BlockPos;
 
 /**
  * Created by Toby on 11/11/2014.

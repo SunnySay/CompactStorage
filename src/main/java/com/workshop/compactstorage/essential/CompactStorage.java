@@ -2,28 +2,22 @@ package com.workshop.compactstorage.essential;
 
 import java.util.List;
 
-import com.workshop.compactstorage.command.CommandCompactStorage;
-import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.oredict.OreDictionary;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.google.common.collect.Lists;
-import com.workshop.compactchests.CompactChests;
-import com.workshop.compactchests.init.ChestBlocks;
-import com.workshop.compactchests.init.ChestItems;
+import com.workshop.compactstorage.command.CommandCompactStorage;
 import com.workshop.compactstorage.compat.ICompat;
 import com.workshop.compactstorage.compat.JabbaCompat;
 import com.workshop.compactstorage.compat.WailaCompat;
 import com.workshop.compactstorage.creativetabs.CreativeTabCompactStorage;
 import com.workshop.compactstorage.essential.handler.ConfigurationHandler;
-import com.workshop.compactstorage.essential.handler.FirstTimeRunHandler;
 import com.workshop.compactstorage.essential.handler.GuiHandler;
 import com.workshop.compactstorage.essential.init.StorageBlocks;
 import com.workshop.compactstorage.essential.init.StorageInfo;
@@ -34,7 +28,6 @@ import com.workshop.compactstorage.network.handler.C02HandlerCraftChest;
 import com.workshop.compactstorage.network.packet.C01PacketUpdateBuilder;
 import com.workshop.compactstorage.network.packet.C02PacketCraftChest;
 
-import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -43,6 +36,7 @@ import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -58,8 +52,6 @@ public class CompactStorage
     public static CompactStorage instance;
     
     public static List<ICompat> compat;
-
-    public static CompactChests legacy_instance;
 
     @SidedProxy(clientSide = StorageInfo.CLIENT_PROXY, serverSide = StorageInfo.SERVER_PROXY, modId = StorageInfo.ID)
     public static IProxy proxy;
@@ -96,20 +88,11 @@ public class CompactStorage
         OreDictionary.registerOre("wool", Blocks.wool);
 
         logger.info("Are we in deofb? " + (deobf ? "Yep!" : "Nope, going retro!"));
-
-        legacy_instance = new CompactChests();
         
         wrapper = NetworkRegistry.INSTANCE.newSimpleChannel(StorageInfo.ID);
         wrapper.registerMessage(C01HandlerUpdateBuilder.class, C01PacketUpdateBuilder.class, 0, Side.SERVER);
         wrapper.registerMessage(C02HandlerCraftChest.class, C02PacketCraftChest.class, 1, Side.SERVER);
         
-        switch(FMLCommonHandler.instance().getEffectiveSide())
-        {
-            case CLIENT: legacy_instance.proxy = new com.workshop.compactchests.proxy.Client(); break;
-            case SERVER: legacy_instance.proxy = new com.workshop.compactchests.proxy.Server(); break;
-        }
-
-
         ConfigurationHandler.configFile = event.getSuggestedConfigurationFile();
     }
 
@@ -143,11 +126,8 @@ public class CompactStorage
     	}
     	
         tabCS = new CreativeTabCompactStorage();
-
-        ChestBlocks.init();
+        
         StorageBlocks.init();
-
-        ChestItems.init();
         StorageItems.init();
     }
 
@@ -157,7 +137,6 @@ public class CompactStorage
         NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiHandler());
 
         proxy.registerRenderers();
-        legacy_instance.postInitialization(event);
 
         GameRegistry.addRecipe(new ItemStack(StorageBlocks.chestBuilder, 1), "ILI", "ICI", "ILI", 'I', new ItemStack(Items.iron_ingot, 1), 'C', new ItemStack(Blocks.chest, 1), 'L', new ItemStack(Blocks.lever, 1));
 
