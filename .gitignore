@@ -11,7 +11,9 @@
 !/settings.gradle
 !/LICENSE
 !/EXPERIMENTAL.md
+!/.gitmodules
 
 ## Folders
 !/src
 !/gradle
+!/seallib
