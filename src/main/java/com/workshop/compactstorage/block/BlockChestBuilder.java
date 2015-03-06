@@ -26,14 +26,17 @@ public class BlockChestBuilder extends Block implements ITileEntityProvider
 	{
 		super(Material.iron);
         setBlockName("chestbuilder");
-        setBlockTextureName("planks_oak");
         setCreativeTab(CompactStorage.tabCS);
+
+		setHardness(2F);
+		setResistance(2F);
+		setHarvestLevel("pickaxe", 1);
 	}
 	
 	@Override
 	public boolean onBlockActivated(World world, int x,int y, int z, EntityPlayer player,int u, float i, float a, float p)
 	{
-		if(!player.isSneaking())
+		if(!player.isSneaking() && !world.isRemote)
 		{
 			player.openGui(CompactStorage.instance, 1, world, x, y, z);
 			return true;
