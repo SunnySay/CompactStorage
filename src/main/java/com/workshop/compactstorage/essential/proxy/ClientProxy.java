@@ -1,6 +1,7 @@
 package com.workshop.compactstorage.essential.proxy;
 
 import com.workshop.compactstorage.client.render.ChestItemRenderer;
+import com.workshop.compactstorage.client.render.RenderSpecials;
 import com.workshop.compactstorage.client.render.TileEntityChestRenderer;
 import com.workshop.compactstorage.essential.handler.FirstTimeRunHandler;
 import com.workshop.compactstorage.essential.init.StorageBlocks;
@@ -22,6 +23,7 @@ public class ClientProxy implements IProxy
         MinecraftForgeClient.registerItemRenderer(ItemBlock.getItemFromBlock(StorageBlocks.chest), new ChestItemRenderer());
 
         MinecraftForge.EVENT_BUS.register(new FirstTimeRunHandler());
+        MinecraftForge.EVENT_BUS.register(new RenderSpecials());
         FMLCommonHandler.instance().bus().register(new FirstTimeRunHandler());
     }
 }
