@@ -6,6 +6,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 
 /**
@@ -18,6 +19,7 @@ public class ItemCrate extends Item
         super();
         setUnlocalizedName("crateItem");
         setCreativeTab(CompactStorage.tabCS);
+        setMaxStackSize(1);
     }
 
     @Override
@@ -30,6 +32,7 @@ public class ItemCrate extends Item
             world.playAuxSFX(1012, (int) player.posX, (int) player.posY, (int) player.posZ, 0);
         }
 
+        stack.stackSize--;
         return stack;
     }
 }
