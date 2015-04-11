@@ -1,0 +1,9 @@
+before_install: true
+install:
+  - "chmod -R 777 ./"
+  - "chmod -R -x ./"
+before_script: true
+script: "./gradlew build"
+after_success: true
+after_failure: true
+after_script: true

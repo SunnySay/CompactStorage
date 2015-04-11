@@ -12,8 +12,8 @@
 !/LICENSE
 !/EXPERIMENTAL.md
 !/.gitmodules
+!/.travis.yml
 
 ## Folders
 !/src
 !/gradle
-!/seallib
